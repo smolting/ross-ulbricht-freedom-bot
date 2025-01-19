@@ -23,6 +23,7 @@ Arg 2: current date epoch timestamp (optional with presense of Arg 1, manually p
 | Run, defaulting to no posting and runtime `UTC::now` | `cargo run` |
 | Run with live posting to nostr with system timestamp | `cargo run -- true $(date '+%s')` |
 | Run without posting to nostr with specific epoch time | `cargo run -- false 1737521940` |
+| `debug` and `info` sent to stdout, no live posting, runtime `UTC::now` | `RUST_LOG="info,debug" cargo run` |
 
 
 
