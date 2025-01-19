@@ -2,8 +2,8 @@ use chrono::{DateTime, DurationRound, TimeDelta, TimeZone, Utc};
 use nostr_sdk::prelude::*;
 use rand::Rng;
 use ross_ulbricht_freedom_bot::{
-    DayOneContext, DayOneDelta, BEFORE_INAUGURATION_TEMPLATES, D1D, D1H_UTC, D1M,
-    D1M_UTC, D1S_UTC, D1Y, RELAYS, SECONDS_IN_A_DAY, SECONDS_IN_TWO_DAYS,
+    DayOneContext, DayOneDelta, BEFORE_INAUGURATION_TEMPLATES, D1D, D1H_UTC, D1M, D1M_UTC, D1S_UTC,
+    D1Y, RELAYS, SECONDS_IN_A_DAY, SECONDS_IN_TWO_DAYS,
 };
 use std::ops::Sub;
 
@@ -28,22 +28,28 @@ pub async fn main() -> Result<()> {
         _ => false,
     };
 
-    let current_date = match std::env::args().nth(2) 
-        {
-            Some(timestamp) => {
-                debug!("Timestamp supplied from CLI: {}", &timestamp);
-                DateTime::<Utc>::from_timestamp(timestamp.parse::<i64>().expect("Invalid CLI timestamp format"),0).unwrap()
-            },
-            None => Utc::now(),
-        };
-
-    debug!("Running main");
-    debug!("fn main Current date: {}", current_date);
+    let current_date = match std::env::args().nth(2) {
+        Some(timestamp) => {
+            debug!("Timestamp supplied from CLI: {}", &timestamp);
+            DateTime::<Utc>::from_timestamp(
+                timestamp
+                    .parse::<i64>()
+                    .expect("Invalid CLI timestamp format"),
+                0,
+            )
+            .unwrap()
+        }
+        None => Utc::now(),
+    };
 
     run_bot(secret_key, live_posting, current_date).await
 }
 
-pub async fn run_bot(key: SecretKey, live_posting: bool, current_date: DateTime<Utc>) -> Result<()> {
+pub async fn run_bot(
+    key: SecretKey,
+    live_posting: bool,
+    current_date: DateTime<Utc>,
+) -> Result<()> {
     let day_one: DateTime<Utc> = Utc
         .with_ymd_and_hms(D1Y, D1M, D1D, D1H_UTC, D1M_UTC, D1S_UTC)
         .unwrap();
